@@ -2,7 +2,7 @@ ENV=\
 
 up:
 	$(ENV) \
-	go run main.go
+	go run main.go test.csv
 
 build:
 	$(ENV) \
