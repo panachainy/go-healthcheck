@@ -1,7 +1,11 @@
 package main
 
 import (
-	"log"
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"go-healthcheck/dto"
+	"net/http"
 	"os"
 
 	oauth2ns "github.com/nmrshll/oauth2-noserver"
@@ -9,24 +13,67 @@ import (
 )
 
 func main() {
+	// Submit section
+	accessToken, err := getLineToken()
+	if err != nil {
+		panic(fmt.Sprintf("Can't get line token: ", err))
+	}
+
+	summary := &dto.Summary{
+		TotalWebsites: 0,
+		Success:       0,
+		Failure:       0,
+		TotalTime:     0,
+	}
+
+	submitReport(accessToken, summary)
+}
+
+func getLineToken() (string, error) {
 	conf := &oauth2.Config{
 		ClientID:     os.Getenv("CLIENT_ID"),
 		ClientSecret: os.Getenv("CLIENT_SECRET"),
 		Scopes:       []string{"profile openid"},
-		RedirectURL:  "http://localhost:14565/oauth/callback",
+		RedirectURL:  "http://127.0.0.1:14565/oauth/callback",
 		Endpoint: oauth2.Endpoint{
 			AuthURL:  "https://access.line.me/oauth2/v2.1/authorize",
-			TokenURL: "https://access.line.me/oauth2/v2.1/access_token",
+			TokenURL: "https://api.line.me/oauth2/v2.1/token",
 		},
 	}
 
 	client, err := oauth2ns.AuthenticateUser(conf)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 
-	log.Printf("Before authenticated")
-	// use client.Get / client.Post for further requests, the token will automatically be there
-	_, _ = client.Get("/auth-protected-path")
-	log.Printf("Successfully authenticated")
+	return client.Token.AccessToken, nil
+}
+
+func submitReport(accessToken string, summary *dto.Summary) error {
+	fmt.Printf("accessToken: %s\n", accessToken)
+
+	summaryJSON, err := json.Marshal(summary)
+	if err != nil {
+		return err
+	}
+
+	req, err := http.NewRequest("POST",
+		"https://backend-challenge.line-apps.com/healthcheck/report",
+		bytes.NewBuffer(summaryJSON))
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Authorization", "Bearer "+accessToken)
+
+	if err != nil {
+		return err
+	}
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(resp.Status)
+
+	return nil
 }
