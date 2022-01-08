@@ -1,4 +1,6 @@
 ENV=\
+	CLIENT_ID=xxx \
+	CLIENT_SECRET=xxxxxxxxxx
 
 up:
 	$(ENV) \
