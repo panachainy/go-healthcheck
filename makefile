@@ -12,3 +12,6 @@ build:
 up.watch:
 	$(ENV) \
 	air
+
+tidy:
+	go mod tidy
