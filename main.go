@@ -89,8 +89,8 @@ func submitReport(accessToken string, summary *dto.Summary) error {
 	req, err := http.NewRequest("POST",
 		"https://backend-challenge.line-apps.com/healthcheck/report",
 		bytes.NewBuffer(summaryJSON))
-	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Authorization", "Bearer "+accessToken)
+	req.Header.Add(constants.CONTENT_TYPE, constants.JSON_APPLICATION)
+	req.Header.Add(constants.AUTHORIZATION, "Bearer "+accessToken)
 
 	if err != nil {
 		return err
