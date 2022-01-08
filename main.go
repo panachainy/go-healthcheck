@@ -2,60 +2,85 @@ package main
 
 import (
 	"bytes"
+	"encoding/csv"
 	"encoding/json"
 	"fmt"
+	"go-healthcheck/constants"
 	"go-healthcheck/dto"
+	"go-healthcheck/externals"
 	"net/http"
 	"os"
+	"strings"
 
 	oauth2ns "github.com/nmrshll/oauth2-noserver"
 	"golang.org/x/oauth2"
 )
 
 func main() {
-	// Submit section
-	accessToken, err := getLineToken()
+	// // Receive csvPath from argument.
+	// if len(os.Args) < 2 {
+	// 	panic("Require csv path at first argument\nUsage: go-healthcheck test.csv")
+	// }
+
+	// csvPath := os.Args[1]
+
+	// Mock instead real argument.
+	csvPath := "test.csv"
+
+	// Read csv file.
+	healths, err := getHealthFromFile(csvPath)
 	if err != nil {
-		panic(fmt.Sprintf("Can't get line token: ", err))
+		panic(fmt.Sprintf("Error getHealthFromFile: %v", err))
 	}
 
-	summary := &dto.Summary{
-		TotalWebsites: 0,
-		Success:       0,
-		Failure:       0,
-		TotalTime:     0,
+	// var summary = new(dto.Summary)
+	summary, err2 := externals.GetHealthSummary(healths)
+	if err != nil {
+		panic(fmt.Sprintf("Error GetHealthSummary: %v", err2))
 	}
 
-	submitReport(accessToken, summary)
+	fmt.Printf("summary: %#v\n", summary)
+
+	// TODO: call http for health check follow csv file data
+	fmt.Println("Perform website checking...")
+
+	fmt.Println("Done!")
+
+	// // Submit section
+	// accessToken, err := getLineToken()
+	// if err != nil {
+	// 	panic(fmt.Sprintf("Can't get line token: ", err))
+	// }
+
+	// submitReport(accessToken, summary)
 }
 
-func getHealthFromFile(csvPath string) error {
+func getHealthFromFile(csvPath string) ([]dto.Health, error) {
 	csvFile, err := os.Open(csvPath)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer csvFile.Close()
 
 	csvLines, err := csv.NewReader(csvFile).ReadAll()
 	if err != nil {
-		return err
+		return nil, err
 	}
+
+	var healthData []dto.Health
 	for i, line := range csvLines {
 		// Check header
 		if i == 0 {
 			if strings.ToLower(line[0]) != "url" {
-				return fmt.Errorf("Invalid csv file")
+				return nil, fmt.Errorf("Invalid csv file")
 			}
 			continue
 		}
 
-		health := dto.Health{
-			URL: line[0],
-		}
-		fmt.Printf("========: %v\n", health.URL)
+		healthData = append(healthData, dto.Health{URL: line[0]})
 	}
 
-	return nil
+	return healthData, nil
 }
 
 func getLineToken() (string, error) {
