@@ -29,6 +29,35 @@ func main() {
 	submitReport(accessToken, summary)
 }
 
+func getHealthFromFile(csvPath string) error {
+	csvFile, err := os.Open(csvPath)
+	if err != nil {
+		return err
+	}
+	defer csvFile.Close()
+
+	csvLines, err := csv.NewReader(csvFile).ReadAll()
+	if err != nil {
+		return err
+	}
+	for i, line := range csvLines {
+		// Check header
+		if i == 0 {
+			if strings.ToLower(line[0]) != "url" {
+				return fmt.Errorf("Invalid csv file")
+			}
+			continue
+		}
+
+		health := dto.Health{
+			URL: line[0],
+		}
+		fmt.Printf("========: %v\n", health.URL)
+	}
+
+	return nil
+}
+
 func getLineToken() (string, error) {
 	conf := &oauth2.Config{
 		ClientID:     os.Getenv("CLIENT_ID"),
