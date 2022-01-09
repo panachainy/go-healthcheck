@@ -11,7 +11,7 @@
       "uuid": "32f1c66b-3361-411f-b51f-feb35db5f8fb",
       "documentation": "",
       "method": "get",
-      "endpoint": "1/healthz",
+      "endpoint": "healthz/delay2sec",
       "responses": [
         {
           "uuid": "5409f178-33ba-4c7d-b433-ecbf7411ea92",
@@ -36,7 +36,7 @@
       "uuid": "39310a2a-6af5-4df6-907e-bd53bb2cf5f1",
       "documentation": "",
       "method": "get",
-      "endpoint": "2/healthz",
+      "endpoint": "healthz/success",
       "responses": [
         {
           "uuid": "64a8984e-4c64-4c56-b048-1ba6f3c96ab8",

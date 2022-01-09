@@ -1,2 +1,4 @@
 URL
-http://localhost:9091/1/healthz
+http://localhost:9091/healthz/success
+http://localhost:9091/healthz/delay2sec
+http://localhost:221/
