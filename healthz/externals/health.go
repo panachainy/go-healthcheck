@@ -5,7 +5,15 @@ import (
 	"time"
 )
 
-func GetHealthCheck(url string) error {
+var Client IHealthService = healthService{}
+
+type IHealthService interface {
+	GetHealthCheck(url string) error
+}
+
+type healthService struct{}
+
+func (hs healthService) GetHealthCheck(url string) error {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return err

@@ -17,7 +17,7 @@ func GetHealthSummary(healths []dto.Health) (*dto.Summary, error) {
 	start := time.Now()
 
 	for _, health := range healths {
-		err := externals.GetHealthCheck(health.URL)
+		err := externals.Client.GetHealthCheck(health.URL)
 		if err != nil {
 			summary.Failure++
 			continue

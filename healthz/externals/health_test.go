@@ -35,7 +35,7 @@ func TestGetHealthCheck(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := GetHealthCheck(tt.args.url); (err != nil) != tt.wantErr {
+			if err := Client.GetHealthCheck(tt.args.url); (err != nil) != tt.wantErr {
 				t.Errorf("GetHealthCheck() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
