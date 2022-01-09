@@ -32,14 +32,14 @@ func GetLineToken() (string, error) {
 	return client.Token.AccessToken, nil
 }
 
-func SubmitReport(accessToken string, summary *dto.Summary) (*http.Response, error) {
+func SubmitReport(accessToken string, summary *dto.Summary, submitUrl string) (*http.Response, error) {
 	summaryJSON, err := json.Marshal(summary)
 	if err != nil {
 		return nil, err
 	}
 
 	req, err := http.NewRequest("POST",
-		"https://backend-challenge.line-apps.com/healthcheck/report",
+		submitUrl,
 		bytes.NewBuffer(summaryJSON))
 	req.Header.Add(constants.CONTENT_TYPE, constants.JSON_APPLICATION)
 	req.Header.Add(constants.AUTHORIZATION, "Bearer "+accessToken)
