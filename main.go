@@ -33,7 +33,6 @@ func main() {
 		panic(fmt.Sprintf("Error getHealthFromFile: %v", err))
 	}
 
-	// var summary = new(dto.Summary)
 	summary, err2 := externals.GetHealthSummary(healths)
 	if err != nil {
 		panic(fmt.Sprintf("Error GetHealthSummary: %v", err2))
@@ -53,6 +52,11 @@ func main() {
 	// }
 
 	// submitReport(accessToken, summary)
+
+	fmt.Printf("Checked webistes: %v\n", summary.TotalWebsites)
+	fmt.Printf("Successful websites: %v\n", summary.Success)
+	fmt.Printf("Failure websites: %v\n", summary.TotalWebsites)
+	fmt.Printf("Total times to finished checking website:Total times to finished checking website: %v\n", summary.TotalWebsites)
 }
 
 func getHealthFromFile(csvPath string) ([]dto.Health, error) {

@@ -3,6 +3,7 @@ package externals
 import (
 	"fmt"
 	"go-healthcheck/dto"
+	"math/big"
 	"net/http"
 	"time"
 )
@@ -10,9 +11,13 @@ import (
 func GetHealthSummary(healths []dto.Health) (*dto.Summary, error) {
 	summary := &dto.Summary{}
 
+	// Start time
+	start := time.Now()
+	r := new(big.Int)
+	fmt.Println(r.Binomial(1000, 10))
+
 	for _, health := range healths {
 		err := getHealthCheck(health.URL)
-		fmt.Printf("URL: %s Error: %v\n", health.URL, err)
 		if err != nil {
 			summary.Failure++
 			continue
@@ -21,9 +26,11 @@ func GetHealthSummary(healths []dto.Health) (*dto.Summary, error) {
 		summary.Success++
 	}
 
-	summary.TotalWebsites = len(healths)
+	// End time
+	elapsed := time.Since(start)
 
-	// TODO: TotalTime
+	summary.TotalWebsites = len(healths)
+	summary.TotalTime = elapsed.Nanoseconds()
 
 	return summary, nil
 }

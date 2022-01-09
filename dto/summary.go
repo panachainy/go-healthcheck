@@ -8,5 +8,5 @@ type Summary struct {
 	// Number of websites that could not reach
 	Failure int `json:"failure"`
 	// Total time that used to check all websites (unix nano)
-	TotalTime int `json:"total_time"`
+	TotalTime int64 `json:"total_time"`
 }
