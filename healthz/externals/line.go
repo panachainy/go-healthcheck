@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"go-healthcheck/constants"
 	"go-healthcheck/healthz/dto"
+	"go-healthcheck/utils"
 	"net/http"
-	"os"
 
 	oauth2ns "github.com/nmrshll/oauth2-noserver"
 	"golang.org/x/oauth2"
@@ -14,8 +14,8 @@ import (
 
 func GetLineToken() (string, error) {
 	conf := &oauth2.Config{
-		ClientID:     os.Getenv("CLIENT_ID"),
-		ClientSecret: os.Getenv("CLIENT_SECRET"),
+		ClientID:     utils.C.CLIENT_ID,
+		ClientSecret: utils.C.CLIENT_SECRET,
 		Scopes:       []string{"profile openid"},
 		RedirectURL:  "http://127.0.0.1:14565/oauth/callback",
 		Endpoint: oauth2.Endpoint{
