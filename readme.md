@@ -3,7 +3,15 @@
 ## Prerequisites
 
 - go version go1.17 darwin/amd64
+- Mockoon
+  - require node v14.17.6
 - docker [optional]
+
+### Setup
+
+#### Mockoon
+
+- macOS: Use Mockoon via apps install -> `brew install --cask mockoon`
 
 ## CSV
 

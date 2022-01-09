@@ -1,0 +1,13 @@
+{
+  "name": "mock",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "mock": "npm i && mockoon-cli start --data ./api.json --index 0 --port 9091",
+    "mock:down": "mockoon-cli stop 0"
+  },
+  "dependencies": {
+    "@mockoon/cli": "^1.5.0"
+  }
+}

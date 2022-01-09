@@ -17,3 +17,9 @@ up.watch:
 
 tidy:
 	go mod tidy
+
+mock:
+	cd mocks && npm run mock
+
+mock.down:
+	cd mocks && npm run mock:down
