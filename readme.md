@@ -8,6 +8,13 @@
 - air
 - docker [optional]
 
+### Usage
+
+> require env such as .env file
+
+1. Build `make build`
+2. Run `make start`
+
 ### Setup
 
 #### Mockoon
@@ -20,6 +27,11 @@
 
 Create new .env file at root directory
 
+Update key with your Line login
+
+- CLIENT_ID (Channel ID)
+- CLIENT_SECRET (Channel secret)
+
 ```bash
 # .env
 
@@ -27,24 +39,9 @@ CLIENT_ID=0000000000
 CLIENT_SECRET=11111111111111111111111111111111
 ```
 
-##### Makefile (for only develop)
+##### *optional Machine environment (for macOS usage)
 
-Update file `./makefile` to your clientId(Channel ID), SecretId(Channel secret)
-
-> I added both of keys in file secret.txt root of zip file.
-
-```sh
-# ./makefile
-
-ENV=\
-  CLIENT_ID=0000000000 \
-  CLIENT_SECRET=11111111111111111111111111111111
-
-```
-
-##### Machine environment (for macOS usage)
-
-Run script below (change to your key instead)
+Run script below
 
 ```sh
 export CLIENT_ID=0000000000
@@ -78,11 +75,6 @@ export CLIENT_SECRET=11111111111111111111111111111111
 #### Create class mock
 
 example `mockgen -source=healthz/externals/health.go -destination=healthz/externals/mock_externals/health.go`
-
-### Usage
-
-1. Build `make build`
-2. Run `go-healthcheck test.csv`
 
 ### CLI
 
