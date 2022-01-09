@@ -24,10 +24,8 @@ func main() {
 
 	fmt.Println()
 	fmt.Println("Perform website checking...")
-	summary, err2 := services.GetHealthSummary(healths)
-	if err2 != nil {
-		panic(fmt.Sprintf("Error GetHealthSummary: %v", err2))
-	}
+	summary := services.GetHealthSummary(healths)
+
 	fmt.Println("Done!")
 	fmt.Println()
 

@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func GetHealthSummary(healths []dto.Health) (*dto.Summary, error) {
+func GetHealthSummary(healths []dto.Health) *dto.Summary {
 	summary := &dto.Summary{}
 
 	// Start time
@@ -32,7 +32,7 @@ func GetHealthSummary(healths []dto.Health) (*dto.Summary, error) {
 	summary.TotalWebsites = len(healths)
 	summary.TotalTime = elapsed.Nanoseconds()
 
-	return summary, nil
+	return summary
 }
 
 func GetHealthFromFile(csvPath string) ([]dto.Health, error) {
