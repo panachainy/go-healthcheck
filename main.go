@@ -1,16 +1,12 @@
 package main
 
 import (
-	"encoding/csv"
 	"fmt"
-	"go-healthcheck/healthz/dto"
 	"go-healthcheck/healthz/services"
-	"os"
-	"strings"
 )
 
 func main() {
-	// TODO: Uncomment after development
+	// // TODO: Uncomment after development
 	// // Receive csvPath from argument.
 	// if len(os.Args) < 2 {
 	// 	panic("Require csv path at first argument\nUsage: go-healthcheck test.csv")
@@ -22,7 +18,7 @@ func main() {
 	csvPath := "test.csv"
 
 	// Read csv file.
-	healths, err := getHealthFromFile(csvPath)
+	healths, err := services.GetHealthFromFile(csvPath)
 	if err != nil {
 		panic(fmt.Sprintf("Error getHealthFromFile: %v", err))
 	}
@@ -42,32 +38,4 @@ func main() {
 	fmt.Printf("Successful websites: %v\n", summary.Success)
 	fmt.Printf("Failure websites: %v\n", summary.Failure)
 	fmt.Printf("Total times to finished checking website:Total times to finished checking website: %v\n", summary.TotalTime)
-}
-
-func getHealthFromFile(csvPath string) ([]dto.Health, error) {
-	csvFile, err := os.Open(csvPath)
-	if err != nil {
-		return nil, err
-	}
-	defer csvFile.Close()
-
-	csvLines, err := csv.NewReader(csvFile).ReadAll()
-	if err != nil {
-		return nil, err
-	}
-
-	var healthData []dto.Health
-	for i, line := range csvLines {
-		// Check header
-		if i == 0 {
-			if strings.ToLower(line[0]) != "url" {
-				return nil, fmt.Errorf("Invalid csv file")
-			}
-			continue
-		}
-
-		healthData = append(healthData, dto.Health{URL: line[0]})
-	}
-
-	return healthData, nil
 }

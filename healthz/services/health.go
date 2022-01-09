@@ -1,10 +1,13 @@
 package services
 
 import (
+	"encoding/csv"
 	"fmt"
 	"go-healthcheck/healthz/dto"
 	"go-healthcheck/healthz/externals"
 	"math/big"
+	"os"
+	"strings"
 	"time"
 )
 
@@ -33,4 +36,32 @@ func GetHealthSummary(healths []dto.Health) (*dto.Summary, error) {
 	summary.TotalTime = elapsed.Nanoseconds()
 
 	return summary, nil
+}
+
+func GetHealthFromFile(csvPath string) ([]dto.Health, error) {
+	csvFile, err := os.Open(csvPath)
+	if err != nil {
+		return nil, err
+	}
+	defer csvFile.Close()
+
+	csvLines, err := csv.NewReader(csvFile).ReadAll()
+	if err != nil {
+		return nil, err
+	}
+
+	var healthData []dto.Health
+	for i, line := range csvLines {
+		// Check header
+		if i == 0 {
+			if strings.ToLower(line[0]) != "url" {
+				return nil, fmt.Errorf("Invalid csv file")
+			}
+			continue
+		}
+
+		healthData = append(healthData, dto.Health{URL: line[0]})
+	}
+
+	return healthData, nil
 }
