@@ -12,8 +12,9 @@
 
 > require env such as .env file
 
-1. Build `make build`
-2. Run `make start`
+1. Start mock service `make mock` (optional)
+2. Build `make build`
+3. Run `make start`
 
 ### Setup
 
