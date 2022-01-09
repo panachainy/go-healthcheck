@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"go-healthcheck/healthz/dto"
 	"go-healthcheck/healthz/externals"
-	"go-healthcheck/healthz/externals/mock_externals"
+	mockExternals "go-healthcheck/healthz/externals/mocks"
 	"reflect"
 	"testing"
 
@@ -18,7 +18,7 @@ func TestGetHealthSummary(t *testing.T) {
 	tests := []struct {
 		name     string
 		args     args
-		mockFunc func(ctrl *gomock.Controller) *mock_externals.MockIHealthService
+		mockFunc func(ctrl *gomock.Controller) *mockExternals.MockIHealthService
 		want     *dto.Summary
 	}{
 		{
@@ -26,8 +26,8 @@ func TestGetHealthSummary(t *testing.T) {
 			args: args{
 				healths: []dto.Health{{URL: "http://localhost:8080/success"}, {URL: "http://localhost:8080/fail"}},
 			},
-			mockFunc: func(ctrl *gomock.Controller) *mock_externals.MockIHealthService {
-				mock := mock_externals.NewMockIHealthService(ctrl)
+			mockFunc: func(ctrl *gomock.Controller) *mockExternals.MockIHealthService {
+				mock := mockExternals.NewMockIHealthService(ctrl)
 				mock.EXPECT().GetHealthCheck("http://localhost:8080/fail").Return(fmt.Errorf("Error : %v", "error ja"))
 				mock.EXPECT().GetHealthCheck("http://localhost:8080/success").Return(nil)
 
@@ -45,8 +45,8 @@ func TestGetHealthSummary(t *testing.T) {
 			args: args{
 				healths: []dto.Health{{URL: "http://localhost:8080/success"}},
 			},
-			mockFunc: func(ctrl *gomock.Controller) *mock_externals.MockIHealthService {
-				mock := mock_externals.NewMockIHealthService(ctrl)
+			mockFunc: func(ctrl *gomock.Controller) *mockExternals.MockIHealthService {
+				mock := mockExternals.NewMockIHealthService(ctrl)
 				mock.EXPECT().GetHealthCheck("http://localhost:8080/success").Return(nil)
 
 				return mock

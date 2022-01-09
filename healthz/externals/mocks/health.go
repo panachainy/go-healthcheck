@@ -2,7 +2,7 @@
 // Source: healthz/externals/health.go
 
 // Package mock_externals is a generated GoMock package.
-package mock_externals
+package mocks
 
 import (
 	reflect "reflect"
