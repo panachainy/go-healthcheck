@@ -7,11 +7,11 @@ up:
 	go run main.go test.csv
 
 build:
-	$(ENV) \
 	go build
 
-build.machine:
-	go build
+start:
+	$(ENV) \
+	go-healthcheck test.csv
 
 # require air in your machine
 # you must comment // Receive csvPath from argument. section to use hardcode instead for use air to develop.

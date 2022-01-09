@@ -66,14 +66,20 @@ export CLIENT_SECRET=11111111111111111111111111111111
 
 ### Usage
 
-1. Build
-
-    | Command            | Description                |
-    | ------------------ | -------------------------- |
-    | make build         | build with env in makefile |
-    | make build.machine | build with env in machine  |
-
+1. Build `make build`
 2. Run `go-healthcheck test.csv`
+
+### CLI
+
+| Command        | Description                                     |
+| -------------- | ----------------------------------------------- |
+| make up        | run app with basic command                      |
+| make build     | build app to get artifact file `go-healthcheck` |
+| make start     | run app from artifact file `go-healthcheck`     |
+| make tidy      | clean up go.mod go.sum                          |
+| make mock      | run mock in background (port 9091)              |
+| make mock.down | down mock                                       |
+| make test      | run test (require mock)                         |
 
 ## CSV
 
