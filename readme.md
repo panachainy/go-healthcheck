@@ -64,6 +64,10 @@ export CLIENT_SECRET=11111111111111111111111111111111
 
 `make test`
 
+#### Create class mock
+
+example `mockgen -source=healthz/externals/health.go -destination=healthz/externals/mock_externals/health.go`
+
 ### Usage
 
 1. Build `make build`
@@ -107,3 +111,4 @@ https://docs.google.com/spreadsheets/d/1Wl0Q9OPbjx1j9FbwXbrfEvtb9wzw5HHZ1mZIDIVN
 - [line-login-easy](https://jaedsada.me/blogs/blog/line-oauth)
 - [cli-oauth](https://gist.github.com/marians/3b55318106df0e4e648158f1ffb43d38)
 - [csv-reader](https://golang.cafe/blog/golang-read-file-example.html)
+- [external-mock](https://wawand.co/blog/posts/how-to-mock-an-external-service-for-test-in-go-73251a7a/)

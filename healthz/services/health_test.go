@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"go-healthcheck/healthz/dto"
 	"go-healthcheck/healthz/externals"
-	"go-healthcheck/healthz/externals/mock_externals"
+	mockExternals "go-healthcheck/healthz/externals/mocks"
 	"reflect"
 	"testing"
 
@@ -18,7 +18,7 @@ func TestGetHealthSummary(t *testing.T) {
 	tests := []struct {
 		name     string
 		args     args
-		mockFunc func(ctrl *gomock.Controller) *mock_externals.MockIHealthService
+		mockFunc func(ctrl *gomock.Controller) *mockExternals.MockIHealthService
 		want     *dto.Summary
 	}{
 		{
@@ -26,8 +26,8 @@ func TestGetHealthSummary(t *testing.T) {
 			args: args{
 				healths: []dto.Health{{URL: "http://localhost:8080/success"}, {URL: "http://localhost:8080/fail"}},
 			},
-			mockFunc: func(ctrl *gomock.Controller) *mock_externals.MockIHealthService {
-				mock := mock_externals.NewMockIHealthService(ctrl)
+			mockFunc: func(ctrl *gomock.Controller) *mockExternals.MockIHealthService {
+				mock := mockExternals.NewMockIHealthService(ctrl)
 				mock.EXPECT().GetHealthCheck("http://localhost:8080/fail").Return(fmt.Errorf("Error : %v", "error ja"))
 				mock.EXPECT().GetHealthCheck("http://localhost:8080/success").Return(nil)
 
@@ -45,8 +45,8 @@ func TestGetHealthSummary(t *testing.T) {
 			args: args{
 				healths: []dto.Health{{URL: "http://localhost:8080/success"}},
 			},
-			mockFunc: func(ctrl *gomock.Controller) *mock_externals.MockIHealthService {
-				mock := mock_externals.NewMockIHealthService(ctrl)
+			mockFunc: func(ctrl *gomock.Controller) *mockExternals.MockIHealthService {
+				mock := mockExternals.NewMockIHealthService(ctrl)
 				mock.EXPECT().GetHealthCheck("http://localhost:8080/success").Return(nil)
 
 				return mock
@@ -74,6 +74,42 @@ func TestGetHealthSummary(t *testing.T) {
 			if !reflect.DeepEqual(got, tt.want) {
 				// TODO: check why can't compare between to obj
 				t.Errorf("GetHealthSummary() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestGetHealthFromFile(t *testing.T) {
+	type args struct {
+		csvPath string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    []dto.Health
+		wantErr bool
+	}{
+		{
+			name:    "when_real_csv_return_success",
+			args:    args{csvPath: "./mocks/test.csv"},
+			want:    []dto.Health{{URL: "http://localhost:9091/healthz/success"}},
+			wantErr: false,
+		},
+		{
+			name:    "when_fake_csv_return_success",
+			args:    args{csvPath: "./mocks/fake.csv"},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := GetHealthFromFile(tt.args.csvPath)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("GetHealthFromFile() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("GetHealthFromFile() = %v, want %v", got, tt.want)
 			}
 		})
 	}

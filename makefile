@@ -32,6 +32,9 @@ mock.down:
 test:
 	go test -v -cover ./...
 
+test.cov:
+	go test -v -race -covermode=atomic -coverprofile=covprofile ./...
+
 # Docker have issue (follow detail in readme.md)
 docker.build:
 	docker build -t go-healthcheck .
