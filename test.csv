@@ -1,4 +1,4 @@
 URL
 http://localhost:9091/healthz/success
 http://localhost:9091/healthz/delay2sec
-http://localhost:221/
+http://localhost:221/should/be/not/exit
