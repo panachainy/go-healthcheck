@@ -14,6 +14,8 @@ build.machine:
 	go build
 
 # require air in your machine
+# you must comment // Receive csvPath from argument. section to use hardcode instead for use air to develop.
+# example hardcode -> csvPath := "test.csv"
 up.watch:
 	$(ENV) \
 	air
