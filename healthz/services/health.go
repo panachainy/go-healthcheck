@@ -51,9 +51,10 @@ func GetHealthFromFile(csvPath string) ([]dto.Health, error) {
 	for i, line := range csvLines {
 		// Check header
 		if i == 0 {
-			if strings.ToLower(line[0]) != "url" {
-				return nil, fmt.Errorf("Invalid csv file")
+			if err := checkCSVHeader(line); err != nil {
+				return nil, err
 			}
+
 			continue
 		}
 
@@ -61,4 +62,11 @@ func GetHealthFromFile(csvPath string) ([]dto.Health, error) {
 	}
 
 	return healthData, nil
+}
+
+func checkCSVHeader(line []string) error {
+	if strings.ToLower(line[0]) != "url" {
+		return fmt.Errorf("invalid csv file: %v", "csv must have header url in first of column")
+	}
+	return nil
 }
