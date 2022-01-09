@@ -1,8 +1,8 @@
 package externals
 
 import (
+	"go-healthcheck/constants"
 	"net/http"
-	"time"
 )
 
 var Client IHealthService = healthService{}
@@ -19,7 +19,7 @@ func (hs healthService) GetHealthCheck(url string) error {
 		return err
 	}
 
-	client := &http.Client{Timeout: 1 * time.Second}
+	client := &http.Client{Timeout: constants.CLIENT_TIME_OUT}
 	resp, err := client.Do(req)
 	if err != nil {
 		return err
