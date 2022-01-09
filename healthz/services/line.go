@@ -7,11 +7,13 @@ import (
 )
 
 func SubmitReport(summary *dto.Summary) {
-	// Submit section
 	accessToken, err := externals.GetLineToken()
 	if err != nil {
 		panic(fmt.Sprintf("Can't get line token: %v", err))
 	}
 
-	externals.SubmitReport(accessToken, summary)
+	_, err = externals.SubmitReport(accessToken, summary)
+	if err != nil {
+		panic(fmt.Sprintf("Submit Error: %v", err))
+	}
 }

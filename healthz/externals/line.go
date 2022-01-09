@@ -3,7 +3,6 @@ package externals
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"go-healthcheck/constants"
 	"go-healthcheck/healthz/dto"
 	"net/http"
@@ -33,12 +32,10 @@ func GetLineToken() (string, error) {
 	return client.Token.AccessToken, nil
 }
 
-func SubmitReport(accessToken string, summary *dto.Summary) error {
-	fmt.Printf("accessToken: %s\n", accessToken)
-
+func SubmitReport(accessToken string, summary *dto.Summary) (*http.Response, error) {
 	summaryJSON, err := json.Marshal(summary)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	req, err := http.NewRequest("POST",
@@ -48,16 +45,14 @@ func SubmitReport(accessToken string, summary *dto.Summary) error {
 	req.Header.Add(constants.AUTHORIZATION, "Bearer "+accessToken)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	client := &http.Client{}
-	resp, err := client.Do(req)
+	response, err := client.Do(req)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	fmt.Println(resp.Status)
-
-	return nil
+	return response, nil
 }
