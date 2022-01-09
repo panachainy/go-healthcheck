@@ -4,21 +4,17 @@ import (
 	"fmt"
 	"go-healthcheck/healthz/services"
 	"go-healthcheck/utils"
+	"os"
 )
 
 func main() {
 	utils.LoadConfigLog("logs.txt")
 
-	// // TODO: Uncomment after development
-	// // Receive csvPath from argument.
-	// if len(os.Args) < 2 {
-	// 	panic("Require csv path at first argument\nUsage: go-healthcheck test.csv")
-	// }
-
-	// csvPath := os.Args[1]
-
-	// Mock instead real argument.
-	csvPath := "test.csv"
+	// Receive csvPath from argument.
+	if len(os.Args) < 2 {
+		panic("Require csv path at first argument\nUsage: go-healthcheck test.csv")
+	}
+	csvPath := os.Args[1]
 
 	// Read csv file.
 	healths, err := services.GetHealthFromFile(csvPath)
