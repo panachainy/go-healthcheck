@@ -1,8 +1,10 @@
 package utils
 
 import (
+	"errors"
 	"fmt"
 	"log"
+	"os"
 	"reflect"
 	"strings"
 	"time"
@@ -24,11 +26,12 @@ type Configuration struct {
 }
 
 func LoadConfiguration(filePath string) {
-	viper.SetConfigFile(filePath)
-
-	err := viper.ReadInConfig()
-	if err != nil {
-		panic(err)
+	if _, err := os.Stat(filePath); !errors.Is(err, os.ErrNotExist) {
+		viper.SetConfigFile(filePath)
+		err := viper.ReadInConfig()
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	viper.AutomaticEnv()
@@ -36,7 +39,7 @@ func LoadConfiguration(filePath string) {
 
 	bindEnvs(C)
 
-	err = viper.Unmarshal(&C)
+	err := viper.Unmarshal(&C)
 	if err != nil {
 		log.Fatal(fmt.Sprintf("unable to decode into struct, %v", err))
 		panic("[CONFIG] unable to decode into struct")

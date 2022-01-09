@@ -9,7 +9,7 @@ import (
 
 func main() {
 	utils.LoadConfigLog("logs.txt")
-	utils.LoadConfiguration("example.env")
+	utils.LoadConfiguration(".env")
 
 	// Receive csvPath from argument.
 	if len(os.Args) < 2 {

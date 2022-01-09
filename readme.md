@@ -16,6 +16,17 @@
 
 #### Env
 
+##### Env file
+
+Create new .env file at root directory
+
+```bash
+# .env
+
+CLIENT_ID=0000000000
+CLIENT_SECRET=11111111111111111111111111111111
+```
+
 ##### Makefile (for only develop)
 
 Update file `./makefile` to your clientId(Channel ID), SecretId(Channel secret)
