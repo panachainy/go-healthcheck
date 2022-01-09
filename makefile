@@ -10,6 +10,9 @@ build:
 	$(ENV) \
 	go build
 
+build.machine:
+	go build
+
 # require air in your machine
 up.watch:
 	$(ENV) \

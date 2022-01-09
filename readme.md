@@ -5,6 +5,7 @@
 - go version go1.17 darwin/amd64
 - Mockoon
   - require node v14.17.6
+- air
 - docker [optional]
 
 ### Setup
@@ -12,6 +13,62 @@
 #### Mockoon
 
 - macOS: Use Mockoon via apps install -> `brew install --cask mockoon`
+
+
+#### Env
+
+##### Makefile (for only develop)
+
+Update file `./makefile` to your clientId(Channel ID), SecretId(Channel secret)
+
+> I added both of keys in file secret.txt root of zip file.
+
+```sh
+# ./makefile
+
+ENV=\
+  CLIENT_ID=0000000000 \
+  CLIENT_SECRET=11111111111111111111111111111111
+
+```
+
+##### Machine environment (for macOS usage)
+
+Run script below (change to your key instead)
+
+```sh
+export CLIENT_ID=0000000000
+export CLIENT_SECRET=11111111111111111111111111111111
+```
+
+> You can add in `vi ~/.bash_profile` up to your machine.
+
+### Development
+
+1. Start Mockoon for prepair external service mock.
+
+    `make mock`
+
+2. Run app in watch mode
+
+    `make up.watch`
+
+    > require air
+
+3. (alternative) Run app
+
+    `make up`
+
+### Usage
+
+1. Build
+
+    | Command            | Description                |
+    | ------------------ | -------------------------- |
+    | make build         | build with env in makefile |
+    | make build.machine | build with env in machine  |
+
+2. Run `go-healthcheck test.csv`
 
 ## CSV
 
