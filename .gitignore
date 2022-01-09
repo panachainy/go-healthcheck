@@ -1,4 +1,7 @@
 go-healthcheck
 tmp
 .env
+
 node_modules
+
+logs.txt

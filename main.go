@@ -3,9 +3,12 @@ package main
 import (
 	"fmt"
 	"go-healthcheck/healthz/services"
+	"go-healthcheck/utils"
 )
 
 func main() {
+	utils.LoadConfigLog("logs.txt")
+
 	// // TODO: Uncomment after development
 	// // Receive csvPath from argument.
 	// if len(os.Args) < 2 {
