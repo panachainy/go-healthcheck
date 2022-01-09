@@ -48,15 +48,17 @@ export CLIENT_SECRET=11111111111111111111111111111111
 
     `make mock`
 
-2. Run app in watch mode
+2. Run app
+
+    `make up`
+
+3. (alternative) Run app in watch mode
 
     `make up.watch`
 
     > require air
-
-3. (alternative) Run app
-
-    `make up`
+    >
+    > require mock
 
 #### Test
 
