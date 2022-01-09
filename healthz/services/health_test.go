@@ -16,45 +16,63 @@ func TestGetHealthSummary(t *testing.T) {
 		healths []dto.Health
 	}
 	tests := []struct {
-		name    string
-		args    args
-		want    *dto.Summary
-		wantErr bool
+		name     string
+		args     args
+		mockFunc func(ctrl *gomock.Controller) *mock_externals.MockIHealthService
+		want     *dto.Summary
 	}{
 		{
 			name: "when_call_with_success1_fail1_should_be_success1_fail1",
-			args: args{healths: []dto.Health{{URL: "http://localhost:8080/success"}, {URL: "http://localhost:8080/fail"}}},
+			args: args{
+				healths: []dto.Health{{URL: "http://localhost:8080/success"}, {URL: "http://localhost:8080/fail"}},
+			},
+			mockFunc: func(ctrl *gomock.Controller) *mock_externals.MockIHealthService {
+				mock := mock_externals.NewMockIHealthService(ctrl)
+				mock.EXPECT().GetHealthCheck("http://localhost:8080/fail").Return(fmt.Errorf("Error : %v", "error ja"))
+				mock.EXPECT().GetHealthCheck("http://localhost:8080/success").Return(nil)
+
+				return mock
+			},
 			want: &dto.Summary{
 				TotalWebsites: 2,
 				Success:       1,
 				Failure:       1,
 				TotalTime:     0,
 			},
-			wantErr: false,
+		},
+		{
+			name: "when_call_with_success1_should_be_success1",
+			args: args{
+				healths: []dto.Health{{URL: "http://localhost:8080/success"}},
+			},
+			mockFunc: func(ctrl *gomock.Controller) *mock_externals.MockIHealthService {
+				mock := mock_externals.NewMockIHealthService(ctrl)
+				mock.EXPECT().GetHealthCheck("http://localhost:8080/success").Return(nil)
+
+				return mock
+			},
+			want: &dto.Summary{
+				TotalWebsites: 1,
+				Success:       1,
+				Failure:       0,
+				TotalTime:     0,
+			},
 		},
 	}
 
-	// Assert mock
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	mock := mock_externals.NewMockIHealthService(ctrl)
-	mock.EXPECT().GetHealthCheck("http://localhost:8080/fail").Return(fmt.Errorf("Error : %v", "error ja"))
-	mock.EXPECT().GetHealthCheck("http://localhost:8080/success").Return(nil)
-	externals.Client = mock
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := GetHealthSummary(tt.args.healths)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("GetHealthSummary() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
+			// Assert mock
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+			externals.Client = tt.mockFunc(ctrl)
 
+			got := GetHealthSummary(tt.args.healths)
 			// ignore expect time duration
 			tt.want.TotalTime = got.TotalTime
 
 			if !reflect.DeepEqual(got, tt.want) {
+				// TODO: check why can't compare between to obj
 				t.Errorf("GetHealthSummary() = %v, want %v", got, tt.want)
 			}
 		})
