@@ -55,8 +55,8 @@ func main() {
 
 	fmt.Printf("Checked webistes: %v\n", summary.TotalWebsites)
 	fmt.Printf("Successful websites: %v\n", summary.Success)
-	fmt.Printf("Failure websites: %v\n", summary.TotalWebsites)
-	fmt.Printf("Total times to finished checking website:Total times to finished checking website: %v\n", summary.TotalWebsites)
+	fmt.Printf("Failure websites: %v\n", summary.Failure)
+	fmt.Printf("Total times to finished checking website:Total times to finished checking website: %v\n", summary.TotalTime)
 }
 
 func getHealthFromFile(csvPath string) ([]dto.Health, error) {
