@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"go-healthcheck/healthz/dto"
 	"go-healthcheck/healthz/externals"
-	"math/big"
 	"os"
 	"strings"
 	"time"
@@ -16,8 +15,6 @@ func GetHealthSummary(healths []dto.Health) (*dto.Summary, error) {
 
 	// Start time
 	start := time.Now()
-	r := new(big.Int)
-	fmt.Println(r.Binomial(1000, 10))
 
 	for _, health := range healths {
 		err := externals.GetHealthCheck(health.URL)

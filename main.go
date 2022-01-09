@@ -30,9 +30,7 @@ func main() {
 	}
 	fmt.Println("Done!")
 
-	// TODO: Uncomment after development
-	// Submit report
-	// services.SubmitReport(summary)
+	services.SubmitReport(summary)
 
 	fmt.Printf("Checked webistes: %v\n", summary.TotalWebsites)
 	fmt.Printf("Successful websites: %v\n", summary.Success)
