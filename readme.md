@@ -9,6 +9,16 @@
 
 https://docs.google.com/spreadsheets/d/1Wl0Q9OPbjx1j9FbwXbrfEvtb9wzw5HHZ1mZIDIVN8zs/edit?usp=sharing
 
+## Note
+
+### Handle errors without stopping the entire process
+
+I'm not sure about this requirement, So I think some process if it error should be stop process because this project is cli.
+
+Example: If you can't connect to line api for get token then you can't submit summary right?
+
+Example2: If you can't connect to health check some url or timeout should be handle it. (in this case I think the same as you)
+
 ## REF
 
 - [line-login-sdk](https://www.youtube.com/watch?v=dimWmt2RHiU)
