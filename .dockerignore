@@ -1,0 +1,4 @@
+go-healthcheck
+tmp
+.env
+node_modules

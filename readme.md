@@ -79,13 +79,19 @@ https://docs.google.com/spreadsheets/d/1Wl0Q9OPbjx1j9FbwXbrfEvtb9wzw5HHZ1mZIDIVN
 
 ## Note
 
-### Handle errors without stopping the entire process
+1. Handle errors without stopping the entire process
 
-I'm not sure about this requirement, So I think some process if it error should be stop process because this project is cli.
+    I'm not sure about this requirement, So I think some process if it error should be stop process because this project is cli.
 
-Example: If you can't connect to line api for get token then you can't submit summary right?
+    Example: If you can't connect to line api for get token then you can't submit summary right?
 
-Example2: If you can't connect to health check some url or timeout should be handle it. (in this case I think the same as you)
+    Example2: If you can't connect to health check some url or timeout should be handle it. (in this case I think the same as you)
+
+2. Have issue when make app in CLI way
+   1. Can't ref csv file outside dockerfile
+   2. Can't open web for login oauth)
+
+    > That my mistake for choose make it in CLI way.
 
 ## REF
 

@@ -29,3 +29,10 @@ mock.down:
 
 test:
 	go test -v -cover ./...
+
+# Docker have issue (follow detail in readme.md)
+docker.build:
+	docker build -t go-healthcheck .
+
+docker.run:
+	docker run --rm -p 14565:14565 go-healthcheck test.csv
