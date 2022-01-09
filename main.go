@@ -1,32 +1,38 @@
 package main
 
 import (
-	"log"
+	"fmt"
+	"go-healthcheck/healthz/services"
+	"go-healthcheck/utils"
 	"os"
-
-	oauth2ns "github.com/nmrshll/oauth2-noserver"
-	"golang.org/x/oauth2"
 )
 
 func main() {
-	conf := &oauth2.Config{
-		ClientID:     os.Getenv("CLIENT_ID"),
-		ClientSecret: os.Getenv("CLIENT_SECRET"),
-		Scopes:       []string{"profile openid"},
-		RedirectURL:  "http://localhost:14565/oauth/callback",
-		Endpoint: oauth2.Endpoint{
-			AuthURL:  "https://access.line.me/oauth2/v2.1/authorize",
-			TokenURL: "https://access.line.me/oauth2/v2.1/access_token",
-		},
-	}
+	utils.LoadConfigLog("logs.txt")
 
-	client, err := oauth2ns.AuthenticateUser(conf)
+	// Receive csvPath from argument.
+	if len(os.Args) < 2 {
+		panic("Require csv path at first argument\nUsage: go-healthcheck test.csv")
+	}
+	csvPath := os.Args[1]
+
+	// Read csv file.
+	healths, err := services.GetHealthFromFile(csvPath)
 	if err != nil {
-		log.Fatal(err)
+		panic(fmt.Sprintf("Error getHealthFromFile: %v", err))
 	}
 
-	log.Printf("Before authenticated")
-	// use client.Get / client.Post for further requests, the token will automatically be there
-	_, _ = client.Get("/auth-protected-path")
-	log.Printf("Successfully authenticated")
+	fmt.Println()
+	fmt.Println("Perform website checking...")
+	summary := services.GetHealthSummary(healths)
+
+	fmt.Println("Done!")
+	fmt.Println()
+
+	services.SubmitReport(summary)
+
+	fmt.Printf("Checked webistes: %v\n", summary.TotalWebsites)
+	fmt.Printf("Successful websites: %v\n", summary.Success)
+	fmt.Printf("Failure websites: %v\n", summary.Failure)
+	fmt.Printf("Total times to finished checking website:Total times to finished checking website: %v\n", summary.TotalTime)
 }

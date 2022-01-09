@@ -1,0 +1,92 @@
+{
+  "uuid": "7bd491f5-95d8-409b-88bb-f8d5ca1e2939",
+  "lastMigration": 19,
+  "name": "Api",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 9091,
+  "hostname": "0.0.0.0",
+  "routes": [
+    {
+      "uuid": "32f1c66b-3361-411f-b51f-feb35db5f8fb",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "healthz/delay2sec",
+      "responses": [
+        {
+          "uuid": "5409f178-33ba-4c7d-b433-ecbf7411ea92",
+          "body": "{}",
+          "latency": 2000,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "39310a2a-6af5-4df6-907e-bd53bb2cf5f1",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "healthz/success",
+      "responses": [
+        {
+          "uuid": "64a8984e-4c64-4c56-b048-1ba6f3c96ab8",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ]
+}
