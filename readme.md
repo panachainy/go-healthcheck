@@ -14,7 +14,6 @@
 
 - macOS: Use Mockoon via apps install -> `brew install --cask mockoon`
 
-
 #### Env
 
 ##### Makefile (for only develop)
@@ -58,6 +57,10 @@ export CLIENT_SECRET=11111111111111111111111111111111
 3. (alternative) Run app
 
     `make up`
+
+#### Test
+
+`make test`
 
 ### Usage
 

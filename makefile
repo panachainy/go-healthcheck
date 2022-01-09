@@ -26,3 +26,6 @@ mock:
 
 mock.down:
 	cd mocks && npm run mock:down
+
+test:
+	go test -v -cover ./...
