@@ -79,6 +79,42 @@ func TestGetHealthSummary(t *testing.T) {
 	}
 }
 
+func TestGetHealthFromFile(t *testing.T) {
+	type args struct {
+		csvPath string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    []dto.Health
+		wantErr bool
+	}{
+		{
+			name:    "when_real_csv_return_success",
+			args:    args{csvPath: "./mocks/test.csv"},
+			want:    []dto.Health{{URL: "http://localhost:9091/healthz/success"}},
+			wantErr: false,
+		},
+		{
+			name:    "when_fake_csv_return_success",
+			args:    args{csvPath: "./mocks/fake.csv"},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := GetHealthFromFile(tt.args.csvPath)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("GetHealthFromFile() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("GetHealthFromFile() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
 func Test_checkCSVHeader(t *testing.T) {
 	type args struct {
 		line []string
