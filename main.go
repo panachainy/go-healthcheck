@@ -3,13 +3,14 @@ package main
 import (
 	"encoding/csv"
 	"fmt"
-	"go-healthcheck/dto"
-	"go-healthcheck/externals"
+	"go-healthcheck/healthz/dto"
+	"go-healthcheck/healthz/services"
 	"os"
 	"strings"
 )
 
 func main() {
+	// TODO: Uncomment after development
 	// // Receive csvPath from argument.
 	// if len(os.Args) < 2 {
 	// 	panic("Require csv path at first argument\nUsage: go-healthcheck test.csv")
@@ -27,14 +28,15 @@ func main() {
 	}
 
 	fmt.Println("Perform website checking...")
-	summary, err2 := externals.GetHealthSummary(healths)
+	summary, err2 := services.GetHealthSummary(healths)
 	if err2 != nil {
 		panic(fmt.Sprintf("Error GetHealthSummary: %v", err2))
 	}
 	fmt.Println("Done!")
 
+	// TODO: Uncomment after development
 	// Submit report
-	externals.SubmitReport(summary)
+	// services.SubmitReport(summary)
 
 	fmt.Printf("Checked webistes: %v\n", summary.TotalWebsites)
 	fmt.Printf("Successful websites: %v\n", summary.Success)

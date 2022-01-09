@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"go-healthcheck/constants"
-	"go-healthcheck/dto"
+	"go-healthcheck/healthz/dto"
 	"net/http"
 	"os"
 
@@ -13,17 +13,7 @@ import (
 	"golang.org/x/oauth2"
 )
 
-func SubmitReport(summary *dto.Summary) {
-	// Submit section
-	accessToken, err := getLineToken()
-	if err != nil {
-		panic(fmt.Sprintf("Can't get line token: %v", err))
-	}
-
-	submitReport(accessToken, summary)
-}
-
-func getLineToken() (string, error) {
+func GetLineToken() (string, error) {
 	conf := &oauth2.Config{
 		ClientID:     os.Getenv("CLIENT_ID"),
 		ClientSecret: os.Getenv("CLIENT_SECRET"),
@@ -43,7 +33,7 @@ func getLineToken() (string, error) {
 	return client.Token.AccessToken, nil
 }
 
-func submitReport(accessToken string, summary *dto.Summary) error {
+func SubmitReport(accessToken string, summary *dto.Summary) error {
 	fmt.Printf("accessToken: %s\n", accessToken)
 
 	summaryJSON, err := json.Marshal(summary)
